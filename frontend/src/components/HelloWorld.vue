@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <p>{{ result }}</p>
     <p>
       For a guide and recipes on how to configure / customize this project,<br />
       check out the
@@ -87,10 +87,32 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  name: "HelloWorld",
-  props: {
-    msg: String,
+  data() {
+    return {
+      result: "",
+    };
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:3000/", {
+        params: {
+          key: this.get_key,
+        },
+      })
+      .then(
+        function (response) {
+          this.result = response.data;
+          console.log(response);
+        }.bind(this)
+      )
+      .catch(
+        function (error) {
+          this.result = "get error";
+          console.log(error);
+        }.bind(this)
+      );
   },
 };
 </script>
